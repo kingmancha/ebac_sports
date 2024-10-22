@@ -1,7 +1,7 @@
 import { Produto as ProdutoType } from '../App'
 import Produto from '../components/Produto'
-
 import * as S from './styles'
+import { useEffect } from 'react'
 
 type Props = {
   produtos: ProdutoType[]
@@ -17,10 +17,7 @@ const ProdutosComponent = ({
   favoritar
 }: Props) => {
   const produtoEstaNosFavoritos = (produto: ProdutoType) => {
-    const produtoId = produto.id
-    const IdsDosFavoritos = favoritos.map((f) => f.id)
-
-    return IdsDosFavoritos.includes(produtoId)
+    return favoritos.some((f) => f.id === produto.id)
   }
 
   return (
@@ -28,11 +25,11 @@ const ProdutosComponent = ({
       <S.Produtos>
         {produtos.map((produto) => (
           <Produto
-            estaNosFavoritos={produtoEstaNosFavoritos(produto)}
             key={produto.id}
             produto={produto}
             favoritar={favoritar}
             aoComprar={adicionarAoCarrinho}
+            estaNosFavoritos={produtoEstaNosFavoritos(produto)}
           />
         ))}
       </S.Produtos>

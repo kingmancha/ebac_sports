@@ -1,8 +1,11 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import Header from './components/Header'
 import Produtos from './containers/Produtos'
-
 import { GlobalStyle } from './styles'
+import { adicionarAoCarrinho } from './store/slices/carrinhoSlice'
+import { fetchProdutos } from './store/slices/produtosSlice'
+import { RootState } from './store/store'
 
 export type Produto = {
   id: number
@@ -12,31 +15,21 @@ export type Produto = {
 }
 
 function App() {
-  const [produtos, setProdutos] = useState<Produto[]>([])
-  const [carrinho, setCarrinho] = useState<Produto[]>([])
-  const [favoritos, setFavoritos] = useState<Produto[]>([])
+  const dispatch = useDispatch()
+
+  const produtos = useSelector((state: RootState) => state.produtos.items)
+  const carrinho = useSelector((state: RootState) => state.carrinho.itens)
+  const favoritos = useSelector((state: RootState) => state.favorios.itens)
 
   useEffect(() => {
-    fetch('https://fake-api-tau.vercel.app/api/ebac_sports')
-      .then((res) => res.json())
-      .then((res) => setProdutos(res))
-  }, [])
+    dispatch(fetchProdutos())
+  }, [dispatch])
 
-  function adicionarAoCarrinho(produto: Produto) {
-    if (carrinho.find((p) => p.id === produto.id)) {
-      alert('Item já adicionado')
-    } else {
-      setCarrinho([...carrinho, produto])
-    }
+  function adicionarAoCarrinhoHandler(produto: Produto) {
+    dispatch(adicionarAoCarrinho(produto))
   }
 
   function favoritar(produto: Produto) {
-    if (favoritos.find((p) => p.id === produto.id)) {
-      const favoritosSemProduto = favoritos.filter((p) => p.id !== produto.id)
-      setFavoritos(favoritosSemProduto)
-    } else {
-      setFavoritos([...favoritos, produto])
-    }
   }
 
   return (
@@ -48,7 +41,7 @@ function App() {
           produtos={produtos}
           favoritos={favoritos}
           favoritar={favoritar}
-          adicionarAoCarrinho={adicionarAoCarrinho}
+          adicionarAoCarrinho={adicionarAoCarrinhoHandler}
         />
       </div>
     </>
