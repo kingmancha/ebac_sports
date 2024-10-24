@@ -5,31 +5,27 @@ import Produtos from './containers/Produtos'
 import { GlobalStyle } from './styles'
 import { adicionarAoCarrinho } from './store/slices/carrinhoSlice'
 import { fetchProdutos } from './store/slices/produtosSlice'
+import { favoritar } from './store/slices/favoritosSlice'
 import { RootState } from './store/store'
-
-export type Produto = {
-  id: number
-  nome: string
-  preco: number
-  imagem: string
-}
+import { Produto as ProdutoType } from './store/slices/produtosSlice'
 
 function App() {
   const dispatch = useDispatch()
 
   const produtos = useSelector((state: RootState) => state.produtos.items)
   const carrinho = useSelector((state: RootState) => state.carrinho.itens)
-  const favoritos = useSelector((state: RootState) => state.favorios.itens)
+  const favoritos = useSelector((state: RootState) => state.favoritos.itens)
 
   useEffect(() => {
-    dispatch(fetchProdutos())
+    dispatch(fetchProdutos() as any)
   }, [dispatch])
 
-  function adicionarAoCarrinhoHandler(produto: Produto) {
+  function adicionarAoCarrinhoHandler(produto: ProdutoType) {
     dispatch(adicionarAoCarrinho(produto))
   }
 
-  function favoritar(produto: Produto) {
+  function favoritarHandler(produto: ProdutoType) {
+    dispatch(favoritar(produto))
   }
 
   return (
@@ -40,7 +36,7 @@ function App() {
         <Produtos
           produtos={produtos}
           favoritos={favoritos}
-          favoritar={favoritar}
+          favoritar={favoritarHandler}
           adicionarAoCarrinho={adicionarAoCarrinhoHandler}
         />
       </div>

@@ -1,29 +1,30 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Produto } from '../../App';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { Produto } from './produtosSlice'
 
 type FavoritosState = {
   itens: Produto[]
 }
 
 const initialState: FavoritosState = {
-  itens: [],
-};
+  itens: []
+}
 
 const favoritosSlice = createSlice({
-  name: 'favoritos'
-  initialState
+  name: 'favoritos',
+  initialState,
   reducers: {
     favoritar: (state, action: PayloadAction<Produto>) => {
-      const produtoIndex = state.itens.findIndex(item => item.id === action.payload.id);
-
+      const produtoIndex = state.itens.findIndex(
+        (item) => item.id === action.payload.id
+      )
       if (produtoIndex >= 0) {
-        state.itens.splice(produtoIndex, 1);
+        state.itens.splice(produtoIndex, 1)
       } else {
-        state.itens.push(action.payload);
+        state.itens.push(action.payload)
       }
-    },
-  },
-});
+    }
+  }
+})
 
-export const { favoritar } = favoritosSlice.actions;
-export default favoritosSlice.reducer;
+export const { favoritar } = favoritosSlice.actions
+export default favoritosSlice.reducer

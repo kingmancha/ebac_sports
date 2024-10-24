@@ -1,7 +1,5 @@
-import { Produto as ProdutoType } from '../App'
-import Produto from '../components/Produto'
+import { Produto as ProdutoType } from '../store/slices/produtosSlice'
 import * as S from './styles'
-import { useEffect } from 'react'
 
 type Props = {
   produtos: ProdutoType[]
@@ -16,21 +14,21 @@ const ProdutosComponent = ({
   adicionarAoCarrinho,
   favoritar
 }: Props) => {
-  const produtoEstaNosFavoritos = (produto: ProdutoType) => {
-    return favoritos.some((f) => f.id === produto.id)
-  }
-
   return (
     <>
       <S.Produtos>
         {produtos.map((produto) => (
-          <Produto
-            key={produto.id}
-            produto={produto}
-            favoritar={favoritar}
-            aoComprar={adicionarAoCarrinho}
-            estaNosFavoritos={produtoEstaNosFavoritos(produto)}
-          />
+          <div key={produto.id}>
+            <h2>{produto.nome}</h2>
+            <button onClick={() => adicionarAoCarrinho(produto)}>
+              Adicionar ao Carrinho
+            </button>
+            <button onClick={() => favoritar(produto)}>
+              {favoritos.some((item) => item.id === produto.id)
+                ? 'Remover Favorito'
+                : 'Adicionar Favorito'}
+            </button>
+          </div>
         ))}
       </S.Produtos>
     </>

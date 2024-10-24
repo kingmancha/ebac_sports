@@ -20,7 +20,7 @@ const initialState: ProdutosState = {
   error: null
 }
 
-export const fetchProdutos = createAsyncThunk(
+export const fetchProdutos = createAsyncThunk<Produto[], void>(
   'produtos/fetchProdutos',
   async () => {
     const response = await fetch(

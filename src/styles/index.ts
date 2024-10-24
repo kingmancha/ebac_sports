@@ -1,5 +1,4 @@
 import { createGlobalStyle } from 'styled-components'
-import { Provider } from 'react-redux'
 
 export const cores = {
   corTexto: '#121714',
